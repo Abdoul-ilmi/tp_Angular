@@ -1,0 +1,10 @@
+<section class="task-page" aria-labelledby="task-page-title">
+  <h2 id="task-page-title">Gérer mes tâches</h2>
+
+  <app-task-form
+    [taskToEdit]="editingTask()"
+    (cancelEdit)="cancelEdit()"
+  />
+
+  <app-task-list (editTask)="startEdit($event)" />
+</section>

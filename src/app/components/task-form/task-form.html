@@ -1,0 +1,68 @@
+<form
+  class="task-form"
+  (submit)="$event.preventDefault(); saveTask()"
+>
+  <!-- Le même formulaire sert à ajouter et à modifier une tâche. -->
+  <h2>
+    {{ isEditing ? 'Modifier la tâche' : 'Ajouter une tâche' }}
+  </h2>
+
+  <label for="title">Titre de la tâche *</label>
+
+  <input
+    id="title"
+    type="text"
+    [formControl]="title"
+    placeholder="Ex. Réviser Angular"
+    [attr.aria-invalid]="title.invalid && title.touched"
+    aria-describedby="title-error"
+  />
+
+  <p id="title-error" class="error" aria-live="polite">
+    @if (title.invalid && title.touched) {
+      Le titre doit contenir au moins 3 caractères,
+      sans compter les espaces au début et à la fin.
+    }
+  </p>
+
+  <label for="description">Description (facultative)</label>
+
+  <textarea
+    id="description"
+    [formControl]="description"
+    rows="3"
+    placeholder="Ajoute quelques détails"
+  ></textarea>
+
+  <label for="due-date">Échéance (facultative)</label>
+
+  <input
+    id="due-date"
+    type="date"
+    [formControl]="dueDate"
+    [min]="today"
+    [attr.aria-invalid]="dueDate.invalid && dueDate.touched"
+    aria-describedby="due-date-error"
+  />
+
+  <p id="due-date-error" class="error" aria-live="polite">
+    @if (dueDate.invalid && dueDate.touched) {
+      Choisis une date égale ou postérieure à aujourd’hui.
+    }
+  </p>
+
+  <div class="form-actions">
+    <button
+      type="submit"
+      [disabled]="title.invalid || dueDate.invalid"
+    >
+      {{ isEditing ? 'Enregistrer' : 'Ajouter' }}
+    </button>
+
+    @if (isEditing) {
+      <button type="button" class="cancel-button" (click)="cancel()">
+        Annuler
+      </button>
+    }
+  </div>
+</form>

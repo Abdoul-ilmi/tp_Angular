@@ -1,0 +1,23 @@
+<section class="stats-page" aria-labelledby="stats-title">
+  <h2 id="stats-title">Statistiques</h2>
+  <p class="stats-intro">Un aperçu de l’avancement de ta liste.</p>
+
+  <div class="stats-grid">
+    <article class="stat-card">
+      <span class="stat-label">Total</span>
+      <strong>{{ store.total() }}</strong>
+    </article>
+    <article class="stat-card done">
+      <span class="stat-label">Faites</span>
+      <strong>{{ store.doneCount() }}</strong>
+    </article>
+    <article class="stat-card todo">
+      <span class="stat-label">À faire</span>
+      <strong>{{ store.todoCount() }}</strong>
+    </article>
+    <article class="stat-card percentage">
+      <span class="stat-label">Pourcentage terminé</span>
+      <strong>{{ completionPercentage() }} %</strong>
+    </article>
+  </div>
+</section>

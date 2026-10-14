@@ -1,0 +1,23 @@
+<main class="app-shell">
+  <header class="app-header">
+    <div>
+      <h1>Ma liste de tâches</h1>
+      <p>Organise tes tâches facilement.</p>
+    </div>
+
+    <nav aria-label="Navigation principale">
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Liste
+      </a>
+      <a routerLink="/stats" routerLinkActive="active">
+        Statistiques
+      </a>
+    </nav>
+  </header>
+
+  <router-outlet />
+</main>

@@ -1,0 +1,124 @@
+<section class="task-list" aria-labelledby="task-list-title">
+  <h2 id="task-list-title">Mes tâches</h2>
+  @if (store.storageError()) {
+  <p role="alert" class="storage-error">
+    {{ store.storageError() }}
+  </p>
+}
+
+  <div class="task-filters">
+    <!-- Les champs restent liés aux Signals du store pour être réactifs. -->
+    <div class="filter-field">
+      <label for="task-search">Rechercher</label>
+
+      <input
+        id="task-search"
+        type="search"
+        placeholder="Titre ou description"
+        #searchField
+        [value]="store.search()"
+        (input)="store.search.set(searchField.value)"
+      />
+    </div>
+
+    <div class="filter-field">
+      <label for="task-status">Statut</label>
+
+      <select
+        id="task-status"
+        #statusField
+        [value]="store.filter()"
+        (change)="changeFilter(statusField.value)"
+      >
+        <option value="all">Toutes</option>
+        <option value="todo">À faire</option>
+        <option value="done">Faites</option>
+      </select>
+    </div>
+
+    <div class="filter-field">
+      <label for="task-sort">Trier par</label>
+
+      <select
+        id="task-sort"
+        #sortField
+        [value]="store.sort()"
+        (change)="changeSort(sortField.value)"
+      >
+        <option value="dueDate">Échéance puis titre</option>
+        <option value="title">Titre</option>
+      </select>
+    </div>
+  </div>
+
+  <p class="task-counter" aria-live="polite">
+    {{ store.todoCount() }} à faire /
+    {{ store.doneCount() }} faites
+  </p>
+
+  <ul>
+    <!-- visibleTasks applique recherche, filtre et tri sans modifier le stockage. -->
+    @for (task of store.visibleTasks(); track task.id) {
+      <li class="task" [class.done]="task.done">
+        <div class="task-content">
+          <label class="task-label">
+            <!-- Le changement d'état est centralisé dans le store. -->
+            <input
+              type="checkbox"
+              [checked]="task.done"
+              (change)="store.toggle(task.id)"
+            />
+
+            <span class="task-title">{{ task.title }}</span>
+          </label>
+
+          @if (task.description) {
+            <p class="task-description">
+              {{ task.description }}
+            </p>
+          }
+
+          @if (task.dueDate) {
+            <p class="task-due-date">
+              Échéance : {{ task.dueDate }}
+            </p>
+          }
+        </div>
+
+        <div class="task-right">
+          <span class="status">
+            {{ task.done ? 'Faite' : 'À faire' }}
+          </span>
+
+          <div class="task-actions">
+            <button
+              type="button"
+              class="edit-button"
+              (click)="edit(task)"
+              [attr.aria-label]="'Modifier la tâche ' + task.title"
+            >
+              Modifier
+            </button>
+
+            <button
+              type="button"
+              class="delete-button"
+              (click)="remove(task.id, task.title)"
+              [attr.aria-label]="'Supprimer la tâche ' + task.title"
+            >
+              Supprimer
+            </button>
+          </div>
+        </div>
+      </li>
+    } @empty {
+      <li class="empty">
+        @if (store.total() === 0) {
+          Aucune tâche pour le moment.
+        } @else {
+          Aucune tâche ne correspond à ces critères.
+        }
+      </li>
+    }
+  </ul>
+</section>
