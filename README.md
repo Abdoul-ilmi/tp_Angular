@@ -13,7 +13,7 @@ Application réalisée avec Angular et TypeScript dans le cadre du TP 2.
 Dans le dossier du projet :
 
 ```bash
-npm install
+cd tp2
 npm start
 ```
 
